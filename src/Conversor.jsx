@@ -4,7 +4,6 @@ import viteLogo from '/vite.svg';
 import './App.css';
 
 function Conversor() {
-
   const [textoAVoz, setTextoAVoz] = useState('');
   const [VozATexto, setVozATexto] = useState('');
 
@@ -33,7 +32,7 @@ function Conversor() {
 
   return (
     <>
-      <h1>ConversorTTS y STT</h1>
+      <h1>Conversor TTS y STT</h1>
       <br />
       <h3>Conversor de texto a voz</h3>
       <input type="text" id="textoAVoz" value={textoAVoz} onChange={cambiarTextoAVoz} />
