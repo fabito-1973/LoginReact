@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import './App.css'
-import Conversor from './Conversor'
+import { useState, useEffect } from 'react';
+import './App.css';
+import Conversor from './Conversor';
 
 function App() {
   const [usuario, setUsuario] = useState('');
@@ -15,28 +15,49 @@ function App() {
     setClave(evento.target.value);
   }
 
-  function ingresar() {
-    if (usuario === 'admin' && clave === 'admin') {
-      alert('Ingresaste');
+  async function ingresar() {
+    const peticion = await fetch("http://localhost:3000/login?usuario=" + usuario + "&clave=" + clave, { credentials: 'include' });
+    if (peticion.ok) {
       setLogueado(true);
     } else {
-      alert('Usuario o clave incorrecta');
+      alert('Usuario o clave incorrectos');
     }
+    //if (usuario === 'admin' && clave === 'admin') {
+    //  alert('Ingresaste');
+    //  setLogueado(true);
+    //} else {
+    // alert('Usuario o clave incorrecta');
+    //}
+
+    async function validar() {
+      const peticion = await fetch("http://localhost:3000/validar", { credentials: 'include' });
+      if (peticion.ok) {
+        setLogueado(true);
+      }
+    }
+    useEffect(() => {
+      validar();
+    }, []);
+
   }
+
+
+
 
 
   if (logueado) {
     return <Conversor />;
-  } else {
-    return (
-      <>
-        <h1>Inicio de sesion</h1>
-        <input placeholder="usuario" type="text" name="usuario" id="usuario" value={usuario} onChange={cambiarUsuario} />
-        <input placeholder="clave" type="password" name="clave" id="clave" value={clave} onChange={cambiarClave} />
-        <button onClick={ingresar}>ingresar</button>
-      </>
-    );
   }
+
+  return (
+    <>
+      <h1>Inicio de sesión</h1>
+      <input placeholder='Usuario' type="text" name="usuario" id="usuario" value={usuario} onChange={cambiarUsuario} />
+      <input placeholder='Clave' type="password" name="clave" id="clave" value={clave} onChange={cambiarClave} />
+      <button onClick={ingresar}>ingresar</button>
+    </>
+  );
+
 }
 
-export default App
+export default App;
